@@ -1,0 +1,38 @@
+---
+version: 0.1
+runson: win
+
+autosplit: true
+concurrency: 4
+
+runtime:
+  language: java
+  version: 11
+
+# Task 2: custom env vars, readable in pre steps and via System.getenv() in test code
+env:
+  TOKEN: anvdegtod-asdaasda0asda-asda
+  ENVIRONMENT: staging
+
+cacheKey: '{{ checksum "pom.xml" }}'
+cacheDirectories:
+  - .m2
+
+pre:
+  - mvn -Dmaven.repo.local=./.m2 dependency:resolve
+  # pre steps run through cmd.exe on Windows runners, so %VAR% is the syntax that expands
+  - echo ENVIRONMENT is %ENVIRONMENT%
+
+testDiscovery:
+  type: raw
+  mode: remote
+  command: grep 'test name' xml/testng_win.xml | awk '{print$2}' | sed 's/name=//g' | sed 's/\x3e//g'
+
+testRunnerCommand: mvn test `-Dplatname=win `-Dmaven.repo.local=./.m2 dependency:resolve `-DselectedTests=$test
+
+# As in the original gist. Nothing here fails, so retries never fire - the retry
+# demonstration is a separate job (testng_hyperexecute_retry.yaml).
+retryOnFailure: true
+maxRetries: 1
+
+jobLabel: [selenium-testng, win, v1, autosplit, fixed]

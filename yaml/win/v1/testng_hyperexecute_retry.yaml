@@ -1,0 +1,36 @@
+---
+# Task 3: proves retryOnFailure retries a failing test.
+# Separate job from testng_hyperexecute_fixed.yaml because a failing test marks the whole job
+# FAILED and Task 1 needs a green job. This job is expected to fail.
+version: 0.1
+runson: win
+
+autosplit: true
+concurrency: 1
+
+runtime:
+  language: java
+  version: 11
+
+env:
+  ENVIRONMENT: staging
+
+cacheKey: '{{ checksum "pom.xml" }}'
+cacheDirectories:
+  - .m2
+
+pre:
+  - mvn -Dmaven.repo.local=./.m2 dependency:resolve
+
+testDiscovery:
+  type: raw
+  mode: remote
+  command: grep 'test name' xml/testng_win_retry.xml | awk '{print$2}' | sed 's/name=//g' | sed 's/\x3e//g'
+
+# -Dplatname=win_retry makes surefire load xml/testng_win_retry.xml (pom.xml: xml/testng_${platname}.xml)
+testRunnerCommand: mvn test `-Dplatname=win_retry `-Dmaven.repo.local=./.m2 dependency:resolve `-DselectedTests=$test
+
+retryOnFailure: true
+maxRetries: 2
+
+jobLabel: [selenium-testng, win, v1, retry-demo]

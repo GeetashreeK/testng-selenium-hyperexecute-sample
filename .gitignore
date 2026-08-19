@@ -12,6 +12,9 @@ hyperexecute-cli.log
 test-output/
 .m2
 hyperexecute
+hyperexecute.exe
+.hyperexecute.exe.old
 hyperexecuteupdate
 hyperexecute-cli-*
+hyperexecute-code-*.zip
 .vscode/

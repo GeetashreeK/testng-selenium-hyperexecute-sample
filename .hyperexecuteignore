@@ -1,0 +1,15 @@
+# Excluded from the HyperExecute job payload. Same syntax as .gitignore.
+# Word holds a lock on an open .docx, which breaks the CLI's archive step.
+*.docx
+~$*
+
+# CLI binaries, leftovers and payload archives
+hyperexecute.exe
+.hyperexecute.exe.old
+hyperexecute-cli.log
+hyperexecute-code-*.zip
+
+# Local build output
+target/
+.m2/
+test-output/

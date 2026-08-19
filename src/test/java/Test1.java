@@ -50,6 +50,9 @@ public class Test1 {
         String platformName = System.getenv("HYPEREXECUTE_PLATFORM") != null ? System.getenv("HYPEREXECUTE_PLATFORM")
                 : platform;
 
+        // Task 2: read the ENVIRONMENT var defined in the YAML env: block
+        System.out.println("ENVIRONMENT=" + System.getenv("ENVIRONMENT"));
+
         // LambdaTest specific options using W3C protocol (LT:Options)
         HashMap<String, Object> ltOptions = new HashMap<>();
         ltOptions.put("build", "[HyperExecute - 1] Demonstration of the TestNG Framework");

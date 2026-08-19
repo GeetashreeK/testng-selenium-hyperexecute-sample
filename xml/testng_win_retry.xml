@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<!-- Task 3 only. Kept out of testng_win.xml so the Task 1 job can finish green.
+     Selected via -Dplatname=win_retry (pom.xml resolves xml/testng_${platname}.xml). -->
+<suite name="Windows: HyperExecute retry demonstration" thread-count="1" parallel="methods">
+	<listeners>
+		<listener class-name="org.uncommons.reportng.HTMLReporter"/>
+		<listener class-name="org.uncommons.reportng.JUnitXMLReporter"/>
+	</listeners>
+
+	<test name="Test_Fail">
+			<classes>
+				<class name="TestIntentionalFailure" />
+			</classes>
+	</test>
+</suite>
